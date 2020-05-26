@@ -1,16 +1,17 @@
 package SchachUser.model.userComponent
 
 trait UserInterface {
+  def name: String
 
-  def yourTurn
+  def myTurn: Boolean
 
-  def othersTurn
+  def nextRound: UserInterface
 
-  def defeated
+  def defeated: UserInterface
 
-  def won
+  def won: UserInterface
 
   def startRemi(rounds: Int)
 
-  def remi
+  def remi: UserInterface
 }
