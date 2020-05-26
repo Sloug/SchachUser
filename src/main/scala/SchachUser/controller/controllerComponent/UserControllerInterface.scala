@@ -7,17 +7,13 @@ import SchachUser.model.userComponent.userBaseImpl.UserState.UserState
 //whos turn
 //next (only choose if move was valid, if promotion after promotion)
 trait UserControllerInterface {
-  def names: (String, String) //2
+  def names: (String, String)
 
-  def colour: Boolean //weg
+  def nextRound: Unit // maybe return state
 
-  def nextRound: Boolean // maybe return state
+  def undoRound: Unit
 
-  def myTurn: Boolean
+  def whitesTurn: Boolean
 
-  def state: UserState //weg
-
-  def setRemi
-
-  def setWonLost
+  def whoseTurn: String
 }
