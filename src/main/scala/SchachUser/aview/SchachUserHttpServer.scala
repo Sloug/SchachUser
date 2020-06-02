@@ -7,8 +7,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
 import scala.concurrent.Future
-
 import SchachUser.controller.controllerComponent.UserControllerInterface
+
+import SchachUser.SchachUser
 
 case class SchachUserHttpServer(userControllerInterface: UserControllerInterface) extends PlayJsonSupport {
   implicit val system: ActorSystem = ActorSystem()
@@ -51,6 +52,12 @@ case class SchachUserHttpServer(userControllerInterface: UserControllerInterface
     },
     post{
       path("user" / "load") {
+        complete("")
+      }
+    },
+    post{
+      path("user" / "shutDown") {
+        SchachUser.shutdown = true
         complete("")
       }
     },

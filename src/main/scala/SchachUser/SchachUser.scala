@@ -6,7 +6,7 @@ import aview.SchachUserHttpServer
 object SchachUser {
   val userController = new UserController()
   val server = SchachUserHttpServer(userController)
-  var shutdown = false
+  @volatile var shutdown = false
   def main(args: Array[String]): Unit = {
     while ( {
       !shutdown
