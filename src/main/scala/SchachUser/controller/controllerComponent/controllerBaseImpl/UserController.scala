@@ -6,7 +6,7 @@ import SchachUser.model.userComponent.userBaseImpl.User
 
 case class UserController(var userWhite: UserInterface, var userBlack: UserInterface) extends UserControllerInterface {
   def this(nameWhite: String, nameBlack: String) = this(new User(nameWhite, false), new User(nameBlack, true))
-  def this() = this(new User("abc", false), new User("def", true))
+  def this() = this(new User("white", false), new User("black", true))
 
   override def names: (String, String) = (userWhite.name, userBlack.name)
 
