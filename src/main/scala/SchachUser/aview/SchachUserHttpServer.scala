@@ -64,7 +64,7 @@ case class SchachUserHttpServer(userControllerInterface: UserControllerInterface
   )
 
 
-  val bindingFuture: Future[Http.ServerBinding] = Http().bindAndHandle(route, "localhost", 7070)
+  val bindingFuture: Future[Http.ServerBinding] = Http().bindAndHandle(route, "0.0.0.0", 7070)
 
   def shutdownWebServer() : Unit = {
     bindingFuture
