@@ -6,7 +6,7 @@ import com.google.inject.Guice
 object DataAccessObject {
   val injector = Guice.createInjector(new DatabaseTypeInjection)
   val database = injector.getInstance(classOf[UserDatabaseInterface])
-  database.initStorage
+  while(database.initStorage.isFailure){}
 
   def create(user: UserInterface): Unit = {
     while(database.create(user).isFailure){}
