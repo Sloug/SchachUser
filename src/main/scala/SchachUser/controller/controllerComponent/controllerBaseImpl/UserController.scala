@@ -8,7 +8,7 @@ import com.google.inject.Guice
 
 case class UserController(var userWhite: UserInterface, var userBlack: UserInterface) extends UserControllerInterface {
   def this(nameWhite: String, nameBlack: String) = this(new User(nameWhite, false), new User(nameBlack, true))
-  def this() = this(new User(UserController.NameWhitePlayer, false), new User(UserController.NameBlackPlayer, true))
+  def this() = this(UserController.newWhiteUser, UserController.newBlackUser)
 
   val injector = Guice.createInjector(new SafeConfigInjection)
   val fileIo = injector.getInstance(classOf[FileIO])
@@ -40,9 +40,16 @@ case class UserController(var userWhite: UserInterface, var userBlack: UserInter
     userWhite = fileIo.load(UserController.NameWhitePlayer)
     userBlack = fileIo.load(UserController.NameBlackPlayer)
   }
+
+  override def restartGame: Unit = {
+    userWhite = UserController.newWhiteUser
+    userBlack = UserController.newBlackUser
+  }
 }
 
 object UserController {
   val NameWhitePlayer = "white"
   val NameBlackPlayer = "black"
+  val newWhiteUser = new User(NameWhitePlayer, false)
+  val newBlackUser = new User(NameBlackPlayer, true)
 }

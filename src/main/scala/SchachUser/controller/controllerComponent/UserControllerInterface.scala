@@ -20,4 +20,6 @@ trait UserControllerInterface {
   def save: Unit
 
   def load: Unit
+
+  def restartGame: Unit
 }
