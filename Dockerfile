@@ -1,6 +1,7 @@
 FROM phusion/baseimage
 RUN apt-get update && apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy dist-upgrade
-RUN apt-get install git default-jdk wget -y
+RUN apt-get install git default-jdk wget net-tools -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 RUN wget www.scala-lang.org/files/archive/scala-2.13.2.deb
 RUN dpkg -i scala-2.13.2.deb
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
@@ -9,7 +10,7 @@ RUN apt-get update
 RUN apt-get install sbt -y --allow-unauthenticated
 RUN git clone https://github.com/Sloug/SchachUser.git
 RUN cd /SchachUser && sbt compile
-ENTRYPOINT cd /SchachUser && sbt run
+ENTRYPOINT service mysql start && cd /SchachUser && PASSWORD=$(cat /etc/mysql/debian.cnf | grep "password"| head -1 | sed -n -e 's/^.*= //p') sbt run
 
 
 

@@ -16,4 +16,10 @@ trait UserControllerInterface {
   def whitesTurn: Boolean
 
   def whoseTurn: String
+
+  def save: Unit
+
+  def load: Unit
+
+  def restartGame: Unit
 }

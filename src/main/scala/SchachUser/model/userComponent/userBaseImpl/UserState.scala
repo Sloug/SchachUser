@@ -1,5 +1,7 @@
 package SchachUser.model.userComponent.userBaseImpl
 
+import play.api.libs.json.{Reads, Writes}
+
 object UserState extends Enumeration {
   type UserState = Value
   val ALIVE, LOST, WON, REMI = Value
@@ -14,4 +16,8 @@ object UserState extends Enumeration {
   def message(userState: UserState) = {
     map(userState)
   }
+
+//  implicit val readsUserState = Reads.enumNameReads(UserState)
+//  implicit val writesUserState = Writes.enumNameWrites
 }
+
