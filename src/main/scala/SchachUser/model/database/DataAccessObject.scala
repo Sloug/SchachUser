@@ -6,7 +6,12 @@ import com.google.inject.Guice
 object DataAccessObject {
   val injector = Guice.createInjector(new DatabaseTypeInjection)
   val database = injector.getInstance(classOf[UserDatabaseInterface])
-  while(database.initStorage.isFailure){}
+  val x = database.initStorage
+  if (x.isFailure)
+    println(x.failed.get.getMessage)
+  else
+  println("Good")
+//  while(database.initStorage.isFailure){}
 
   def create(user: UserInterface): Unit = {
     while(database.create(user).isFailure){}
@@ -14,8 +19,8 @@ object DataAccessObject {
 
   def read(name: String): UserInterface = {
     while(true) {
-      val field = database.read(name)
-      if(field.isSuccess) return field.get
+      val user = database.read(name)
+      if(user.isSuccess) return user.get
     }
     null
   }
