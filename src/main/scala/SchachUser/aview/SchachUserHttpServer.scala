@@ -61,6 +61,24 @@ case class SchachUserHttpServer(userControllerInterface: UserControllerInterface
         complete("")
       }
     },
+    post{
+      path("user" / "save") {
+        userControllerInterface.save
+        complete("")
+      }
+    },
+    post{
+      path("user" / "load") {
+        userControllerInterface.load
+        complete("")
+      }
+    },
+    post{
+      path("user" / "restartGame") {
+        userControllerInterface.restartGame
+        complete("")
+      }
+    },
   )
 
 
