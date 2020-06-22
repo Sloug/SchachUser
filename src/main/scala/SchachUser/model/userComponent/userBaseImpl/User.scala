@@ -10,6 +10,10 @@ case class User(name: String, black: Boolean, myTurn: Boolean, state: UserState 
 
   var roundsLeft:Option[Int] = Option.empty
 
+  override def isBlack: Boolean = black
+
+  override def getState: UserState = state
+
   override def nextRound: UserInterface = copy(name, black, !myTurn, state)
 
   override def defeated: UserInterface = copy(name, black, myTurn, UserState.LOST)

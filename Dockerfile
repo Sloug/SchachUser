@@ -8,8 +8,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B
 RUN apt-get update
 RUN apt-get install sbt -y --allow-unauthenticated
 RUN git clone https://github.com/Sloug/SchachUser.git
-RUN cd /SchachUser && sbt compile
-ENTRYPOINT cd /SchachUser && sbt run
+RUN cd /SchachUser  && git pull && git checkout -t origin/slick && sbt compile
+ENTRYPOINT service mysql start && cd /SchachUser && PASSWORD=$(cat /etc/mysql/debian.cnf | grep "password"| head -1 | sed -n -e 's/^.*= //p') sbt run
 
 
 
