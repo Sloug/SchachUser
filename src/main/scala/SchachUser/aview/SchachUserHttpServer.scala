@@ -46,16 +46,6 @@ case class SchachUserHttpServer(userControllerInterface: UserControllerInterface
       }
     },
     post{
-      path("user" / "save") {
-        complete("")
-      }
-    },
-    post{
-      path("user" / "load") {
-        complete("")
-      }
-    },
-    post{
       path("user" / "shutDown") {
         SchachUser.shutdown = true
         complete("")

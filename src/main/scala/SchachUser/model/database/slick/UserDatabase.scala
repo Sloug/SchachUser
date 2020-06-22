@@ -22,7 +22,7 @@ class UserDatabase extends UserDatabaseInterface {
 
   override def read(name: String): Try[UserInterface] = {
     val readAction = userDatabase.filter(_.name === name).result
-    Try(Await.result(db.run(readAction), Duration.Inf).head)
+    Try(Await.result(db.run(readAction), Duration.Inf).map(x => x.toUserInterface).head)
   }
 
   override def update(user: UserInterface): Try[Unit] = {
@@ -52,5 +52,5 @@ class PersistanceMapping(tag:Tag) extends Table[UserDatabaseContainer](tag, "use
   def state = column[UserState]("state")
   override def * = (name, black, myTurn, state) <> (create, extract)
   def create(t: (String, Boolean, Boolean, UserState)): UserDatabaseContainer = UserDatabaseContainer(t._1, t._2, t._3, t._4)
-  def extract(f: User): Option[(String, Boolean, Boolean, UserState)] = Some((f.name, f.black, f.myTurn, f.state))
+  def extract(f: UserDatabaseContainer): Option[(String, Boolean, Boolean, UserState)] = Some((f.name, f.black, f.myTurn, f.state))
 }
