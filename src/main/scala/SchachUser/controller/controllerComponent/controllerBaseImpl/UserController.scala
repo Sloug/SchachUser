@@ -32,16 +32,19 @@ case class UserController(var userWhite: UserInterface, var userBlack: UserInter
   override def whoseTurn: String = if(userWhite.myTurn) "white" else "black"
 
   override def save: Unit = {
+    println("save")
     fileIo.save(userWhite)
     fileIo.save(userBlack)
   }
 
   override def load: Unit = {
+    println("load")
     userWhite = fileIo.load(UserController.NameWhitePlayer)
     userBlack = fileIo.load(UserController.NameBlackPlayer)
   }
 
   override def restartGame: Unit = {
+    println("restart")
     userWhite = UserController.newWhiteUser
     userBlack = UserController.newBlackUser
   }
