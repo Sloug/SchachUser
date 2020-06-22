@@ -1,6 +1,7 @@
 FROM phusion/baseimage
 RUN apt-get update && apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy dist-upgrade
-RUN apt-get install git default-jdk wget -y
+RUN apt-get install git default-jdk wget net-tools -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 RUN wget www.scala-lang.org/files/archive/scala-2.13.2.deb
 RUN dpkg -i scala-2.13.2.deb
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list

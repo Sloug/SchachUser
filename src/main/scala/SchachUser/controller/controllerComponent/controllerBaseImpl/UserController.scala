@@ -1,12 +1,17 @@
 package SchachUser.controller.controllerComponent.controllerBaseImpl
 
-import SchachUser.controller.controllerComponent.UserControllerInterface
+import SchachUser.controller.controllerComponent.{SafeConfigInjection, UserControllerInterface}
+import SchachUser.model.fileIoComponent.FileIO
 import SchachUser.model.userComponent.UserInterface
 import SchachUser.model.userComponent.userBaseImpl.User
+import com.google.inject.Guice
 
 case class UserController(var userWhite: UserInterface, var userBlack: UserInterface) extends UserControllerInterface {
   def this(nameWhite: String, nameBlack: String) = this(new User(nameWhite, false), new User(nameBlack, true))
-  def this() = this(new User("white", false), new User("black", true))
+  def this() = this(new User(UserController.NameWhitePlayer, false), new User(UserController.NameBlackPlayer, true))
+
+  val injector = Guice.createInjector(new SafeConfigInjection)
+  val fileIo = injector.getInstance(classOf[FileIO])
 
   override def names: (String, String) = (userWhite.name, userBlack.name)
 
@@ -25,4 +30,19 @@ case class UserController(var userWhite: UserInterface, var userBlack: UserInter
   override def undoRound: Unit = nextRound
 
   override def whoseTurn: String = if(userWhite.myTurn) "white" else "black"
+
+  override def save: Unit = {
+    fileIo.save(userWhite)
+    fileIo.save(userBlack)
+  }
+
+  override def load: Unit = {
+    userWhite = fileIo.load(UserController.NameWhitePlayer)
+    userBlack = fileIo.load(UserController.NameBlackPlayer)
+  }
+}
+
+object UserController {
+  val NameWhitePlayer = "white"
+  val NameBlackPlayer = "black"
 }
