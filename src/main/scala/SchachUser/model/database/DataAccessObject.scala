@@ -11,15 +11,9 @@ object DataAccessObject {
     println(x.failed.get.getMessage)
   else
   println("Good")
-//  while(database.initStorage.isFailure){}
 
   def create(user: UserInterface): Unit = {
-//    while(database.create(user).isFailure){}
-    val x = database.create(user)
-    if (x.isFailure)
-      println(x.failed.get.getMessage)
-    else
-      println("Good")
+    while(database.create(user).isFailure){}
   }
 
   def read(name: String): UserInterface = {

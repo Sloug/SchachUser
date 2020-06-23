@@ -20,31 +20,23 @@ case class UserController(var userWhite: UserInterface, var userBlack: UserInter
     userBlack = userBlack.nextRound
   }
 
-  override def whitesTurn: Boolean = userWhite.myTurn //2 user!!
+  override def whitesTurn: Boolean = userWhite.myTurn
 
-//  override def state: _root_.SchachUser.model.userComponent.userBaseImpl.UserState.UserState = userWhite.state
-
-//  override def setRemi: Unit = ???
-//
-//  override def setWonLost: Unit = ???
   override def undoRound: Unit = nextRound
 
   override def whoseTurn: String = if(userWhite.myTurn) "white" else "black"
 
   override def save: Unit = {
-    println("save")
     fileIo.save(userWhite)
     fileIo.save(userBlack)
   }
 
   override def load: Unit = {
-    println("load")
     userWhite = fileIo.load(UserController.NameWhitePlayer)
     userBlack = fileIo.load(UserController.NameBlackPlayer)
   }
 
   override def restartGame: Unit = {
-    println("restart")
     userWhite = UserController.newWhiteUser
     userBlack = UserController.newBlackUser
   }
