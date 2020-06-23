@@ -19,7 +19,13 @@ object DataAccessObject {
   def read(name: String): UserInterface = {
     while(true) {
       val user = database.read(name)
-      if(user.isSuccess) return user.get
+//      if(user.isSuccess) return user.get
+      if(user.isSuccess) {
+        println(user.get)
+        return user.get
+      } else {
+        println("error: " + user.failed.get.getMessage)
+      }
     }
     null
   }

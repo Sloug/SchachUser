@@ -20,12 +20,17 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
     val document: Document = Document("name" -> playerDatabase.name, "black" -> playerDatabase.black,
       "myTurn" -> playerDatabase.myTurn, "state" -> playerDatabase.state.toString)
 
-    Try(Await.result(collection.insertOne(document).toFuture(), Duration.Inf))
+    Try(if(Await.result(collection.countDocuments().toFuture(), Duration.Inf) > 0)
+      {Await.result(collection.insertOne(document).toFuture(), Duration.Inf)}
+    else {
+      val filterDocument: Document = Document("name" -> user.name)
+      Await.result(collection.updateOne(filterDocument, document).toFuture(), Duration.Inf)
+    })
   }
 
   override def read(name: String): Try[UserInterface] = {
     val collection: MongoCollection[Document] = database.getCollection("player")
-
+    println("read") //DEBUG
     Try(Await.result(collection.find().toFuture(), Duration.Inf).filter(document => document.get("name") == name).map(document =>
       UserDatabaseContainer(document.get("name").get.asString().getValue, document.get("black").get.asBoolean().getValue,
         document.get("myTurn").get.asBoolean().getValue,
