@@ -11,7 +11,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import scala.util.Try
 
-class UserDatabase extends UserDatabaseInterface {
+class UserDatabaseMySQL extends UserDatabaseInterface {
   val userDatabase = TableQuery[PersistanceMapping]
   val db = Database.forConfig("mysql")
 
