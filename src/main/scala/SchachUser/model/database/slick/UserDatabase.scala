@@ -41,7 +41,7 @@ class UserDatabase extends UserDatabaseInterface {
   }
 }
 
-class PersistanceMapping(tag:Tag) extends Table[UserDatabaseContainer](tag, "user") {
+class PersistanceMapping(tag:Tag) extends Table[UserDatabaseContainer](tag, "player") {
   implicit val userStateMapper = MappedColumnType.base[UserState, String] (
     e => e.toString,
     s => UserState.withName(s)
