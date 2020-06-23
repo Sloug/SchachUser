@@ -31,7 +31,7 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
   override def read(name: String): Try[UserInterface] = {
     val collection: MongoCollection[Document] = database.getCollection("player")
     println("read") //DEBUG
-    Try(Await.result(collection.find().toFuture(), Duration.Inf).filter(document => document.get("name") == name).map(document =>
+    Try(Await.result(collection.find().toFuture(), Duration.Inf).filter(document => document.get("name").get.asString().getValue == name).map(document =>
       UserDatabaseContainer(document.get("name").get.asString().getValue, document.get("black").get.asBoolean().getValue,
         document.get("myTurn").get.asBoolean().getValue,
         UserState.withName(document.get("state").get.asString().getValue))).head.toUserInterface)
