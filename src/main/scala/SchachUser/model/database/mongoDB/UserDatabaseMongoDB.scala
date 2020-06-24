@@ -21,7 +21,8 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
     val document: Document = Document("name" -> playerDatabase.name, "black" -> playerDatabase.black,
       "myTurn" -> playerDatabase.myTurn, "state" -> playerDatabase.state.toString)
 
-    val g = Await.result(collection.countDocuments().toFuture(), Duration.Inf)
+    val filterDocument: Document = Document("name" -> user.name)
+    val g = Await.result(collection.countDocuments(filterDocument).toFuture(), Duration.Inf)
     println("size is: " + g)
     Try(
       if(g == 0) {
@@ -30,7 +31,6 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
       }
     else {
       println("Already created")
-      val filterDocument: Document = Document("name" -> user.name)
       Await.result(collection.updateOne(filterDocument, document).toFuture(), Duration.Inf)
     })
   }

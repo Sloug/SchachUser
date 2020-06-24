@@ -17,9 +17,9 @@ object DataAccessObject {
       val a = database.create(user)
       if(a.isSuccess) {
         println("Success")
-        return Unit
+        return
       } else {
-        println(a.failed.get.getMessage)
+        println("Failure: " + a.failed.get.getMessage)
         System.exit(1)
       }
     }
