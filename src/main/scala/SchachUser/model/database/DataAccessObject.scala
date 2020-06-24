@@ -13,7 +13,16 @@ object DataAccessObject {
   println("Good")
 
   def create(user: UserInterface): Unit = {
-    while(database.create(user).isFailure){}
+    while(true){
+      val a = database.create(user)
+      if(a.isSuccess) {
+        println("Success")
+        return
+      } else {
+        println(a.failed.get.getMessage)
+        System.exit(1)
+      }
+    }
   }
 
   def read(name: String): UserInterface = {
