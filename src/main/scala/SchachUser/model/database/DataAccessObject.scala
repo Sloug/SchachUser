@@ -20,7 +20,8 @@ object DataAccessObject {
         return
       } else {
         println("Failure: " + a.failed.get.getMessage)
-        System.exit(1)
+//        System.exit(1)
+        return
       }
     }
   }
