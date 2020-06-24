@@ -23,8 +23,8 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
 
     val g = Await.result(collection.countDocuments().toFuture(), Duration.Inf)
     println("size is: " + g)
-    Try(if(g == 0)
-      {
+    Try(
+      if(g == 0) {
         println("create")
         Await.result(collection.insertOne(document).toFuture(), Duration.Inf)
       }
