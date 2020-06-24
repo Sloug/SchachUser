@@ -21,7 +21,9 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
     val document: Document = Document("name" -> playerDatabase.name, "black" -> playerDatabase.black,
       "myTurn" -> playerDatabase.myTurn, "state" -> playerDatabase.state.toString)
 
-    Try(if(Await.result(collection.countDocuments().toFuture(), Duration.Inf) > 0)
+    val g = Await.result(collection.countDocuments().toFuture(), Duration.Inf)
+    println("size is: " + g)
+    Try(if(g > 0)
       {
         println("create")
         Await.result(collection.insertOne(document).toFuture(), Duration.Inf)
