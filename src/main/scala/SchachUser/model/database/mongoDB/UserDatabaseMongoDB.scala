@@ -4,6 +4,7 @@ import SchachUser.model.database.{UserDatabaseContainer, UserDatabaseInterface}
 import SchachUser.model.userComponent.UserInterface
 import SchachUser.model.userComponent.userBaseImpl.UserState
 import org.mongodb.scala._
+import org.mongodb.scala.model.Filters._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -30,11 +31,12 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
 
   override def read(name: String): Try[UserInterface] = {
     val collection: MongoCollection[Document] = database.getCollection("player")
+
     println("read") //DEBUG
-    Try(Await.result(collection.find().toFuture(), Duration.Inf).filter(document => document.get("name").get.asString().getValue == name).map(document =>
-      UserDatabaseContainer(document.get("name").get.asString().getValue, document.get("black").get.asBoolean().getValue,
-        document.get("myTurn").get.asBoolean().getValue,
-        UserState.withName(document.get("state").get.asString().getValue))).head.toUserInterface)
+    Try(Await.result(collection.find(equal("name", name)).first().map(document =>
+        UserDatabaseContainer(document.get("name").get.asString().getValue, document.get("black").get.asBoolean().getValue,
+          document.get("myTurn").get.asBoolean().getValue, UserState.withName(document.get("state").get.asString().getValue))).toFuture(), Duration.Inf)
+        .head.toUserInterface)
   }
 
   override def update(user: UserInterface): Try[Unit] = {
