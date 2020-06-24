@@ -33,10 +33,13 @@ class UserDatabasexMongoDB extends UserDatabaseInterface {
     val collection: MongoCollection[Document] = database.getCollection("player")
 
     println("read") //DEBUG
-    Try(Await.result(collection.find(equal("name", name)).first().map(document =>
+    Try({
+      val a = Await.result(collection.find(equal("name", name)).first().map(document =>
         UserDatabaseContainer(document.get("name").get.asString().getValue, document.get("black").get.asBoolean().getValue,
           document.get("myTurn").get.asBoolean().getValue, UserState.withName(document.get("state").get.asString().getValue))).toFuture(), Duration.Inf)
-        .head.toUserInterface)
+      println(a + " " + a.size)
+      a.head.toUserInterface
+    })
   }
 
   override def update(user: UserInterface): Try[Unit] = {
