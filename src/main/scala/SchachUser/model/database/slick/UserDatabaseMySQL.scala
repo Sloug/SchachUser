@@ -7,7 +7,7 @@ import SchachUser.model.userComponent.userBaseImpl.UserState.UserState
 import slick.lifted.Tag
 import slick.jdbc.MySQLProfile.api._
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 import scala.util.Try
 
@@ -15,29 +15,29 @@ class UserDatabaseMySQL extends UserDatabaseInterface {
   val userDatabase = TableQuery[PersistanceMapping]
   val db = Database.forConfig("mysql")
 
-  override def create(user: UserInterface): Try[Unit] = {
+  override def create(user: UserInterface): Future[Unit] = {
     val insertAction = userDatabase.insertOrUpdate(new UserDatabaseContainer(user))
-    Try(Await.result(db.run(insertAction), Duration.Inf))
+    Future.fromTry(Try(Await.result(db.run(insertAction), Duration.Inf)))
   }
 
-  override def read(name: String): Try[UserInterface] = {
+  override def read(name: String): Future[UserInterface] = {
     val readAction = userDatabase.filter(_.name === name).result
-    Try(Await.result(db.run(readAction), Duration.Inf).map(x => x.toUserInterface).head)
+    Future.fromTry(Try(Await.result(db.run(readAction), Duration.Inf).map(x => x.toUserInterface).head))
   }
 
-  override def update(user: UserInterface): Try[Unit] = {
+  override def update(user: UserInterface): Future[Unit] = {
     val insertAction = userDatabase.insertOrUpdate(new UserDatabaseContainer(user))
-    Try(Await.result(db.run(insertAction), Duration.Inf))
+    Future.fromTry(Try(Await.result(db.run(insertAction), Duration.Inf)))
   }
 
-  override def delete(name: String): Try[Unit] = {
+  override def delete(name: String): Future[Unit] = {
     val deleteAction = userDatabase.filter(_.name === name).delete
-    Try(Await.result(db.run(deleteAction), Duration.Inf))
+    Future.fromTry(Try(Await.result(db.run(deleteAction), Duration.Inf)))
   }
 
-  override def initStorage: Try[Unit] = {
+  override def initStorage: Future[Unit] = {
     val createTableAction = userDatabase.schema.create
-    Try(Await.result(db.run(createTableAction), Duration.Inf))
+    Future.fromTry(Try(Await.result(db.run(createTableAction), Duration.Inf)))
   }
 }
 

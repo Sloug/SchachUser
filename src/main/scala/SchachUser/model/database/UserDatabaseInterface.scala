@@ -4,14 +4,15 @@ import SchachUser.model.userComponent.UserInterface
 import SchachUser.model.userComponent.userBaseImpl.User
 import SchachUser.model.userComponent.userBaseImpl.UserState.UserState
 
+import scala.concurrent.Future
 import scala.util.Try
 
 trait UserDatabaseInterface {
-  def create(user: UserInterface): Try[Unit]
-  def read(name: String): Try[UserInterface]
-  def update(user: UserInterface): Try[Unit]
-  def delete(name: String): Try[Unit]
-  def initStorage: Try[Unit]
+  def create(user: UserInterface): Future[Unit]
+  def read(name: String): Future[UserInterface]
+  def update(user: UserInterface): Future[Unit]
+  def delete(name: String): Future[Unit]
+  def initStorage: Future[Unit]
 }
 
 
